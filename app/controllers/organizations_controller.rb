@@ -1,5 +1,6 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: %i[ show edit update destroy ]
+  before_action :set_organization, only: %i[ show edit update destroy add_member]
+  before_action :check_permission, only: %i[ edit update destroy add_member ]
 
   # GET /organizations or /organizations.json
   def index
@@ -57,10 +58,31 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def add_member
+    user = User.find_by(email: params[:email])
+    if user.nil?
+      redirect_to @organization, alert: "User not found."
+      return
+    end
+
+    membership = @organization.memberships.find_or_initialize_by(user: user)
+    membership.role = params[:role]
+
+    if membership.save
+      redirect_to @organization, notice: "#{user.email} added as #{membership.role}."
+    else
+      redirect_to @organization, alert: "Failed to add member."
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
       @organization = Organization.find(params[:id])
+    end
+
+    def check_permission
+      authorize @organization
     end
 
     # Only allow a list of trusted parameters through.

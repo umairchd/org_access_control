@@ -8,6 +8,10 @@ class OrganizationPolicy < ApplicationPolicy
     user_is_admin?
   end
 
+  def add_member?
+    user_is_admin?
+  end
+
   def user_is_admin?
     return false unless user
     record.memberships.where(user: user, role: 'admin').exists?

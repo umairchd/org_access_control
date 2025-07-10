@@ -1,0 +1,22 @@
+<div class="flex content-between flex-col ">
+  <div class="w-full max-w-xl mx-auto my-8 border">
+    <h1>User Roles</h1>
+    <%= pie_chart @user_counts %>
+  </div>
+  <div class="w-full max-w-xl mx-auto border">
+
+    <h1>Users per Organization</h1>
+    <%= column_chart @org_user_counts %>
+  </div>
+
+  <div class="border">
+    <h1 class="text-2xl font-bold mb-4">Your Organizations</h1>
+
+    <% @organizations.each do |org| %>
+      <div class="mb-8 p-4 bg-white shadow rounded-lg">
+        <h2 class="text-xl font-semibold mb-2"><%= org.name %></h2>
+        <%= pie_chart org.memberships.group(:role).count, height: "300px", library: { title: { text: "Roles in #{org.name}" } } %>
+      </div>
+    <% end %>
+  </div>
+</div>

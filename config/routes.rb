@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :organizations
+  root "dashboard#index"
+  resources :organizations do
+    post :add_member, on: :member
+  end
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

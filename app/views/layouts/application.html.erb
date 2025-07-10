@@ -9,11 +9,22 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "chartkick" %>
+    <%= javascript_include_tag "Chart.bundle" %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
+    <main class="container mx-auto mt-28 px-5">
+      <div class="flex flex-col basis-full max-w-100">
+        <% flash.each do |type, message| %>
+          <div class="mb-4 p-4 rounded
+            <%= type == 'notice' ? 'bg-green-500' : 'bg-red-500' %>">
+            <%= message %>
+          </div>
+        <% end %>
+        <%= render 'shared/header' %>
+        <%= yield %>
+      </div>
     </main>
   </body>
 </html>

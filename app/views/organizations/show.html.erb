@@ -12,4 +12,40 @@
   <%= link_to "Edit this organization", edit_organization_path(@organization), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to organizations", organizations_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= button_to "Destroy this organization", @organization, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+
+</div>
+<div class="border">
+  <h3 class="text-lg font-semibold mt-8 mb-2">Members</h3>
+  <ul>
+    <% @organization.memberships.includes(:user).each do |membership| %>
+      <li class="mb-1">
+        <strong><%= membership.user.email %></strong> — <%= membership.role.capitalize %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<div class="border">
+  <% if policy(@organization).update? %>
+    <div class="md:w-2/3 w-full">
+      <h2 class="text-2xl font-semibold mb-2">Add Member to Organization</h2>
+
+      <%= form_with url: add_member_organization_path(@organization), method: :post, local: true do |f| %>
+        <div class="flex space-x-4">
+          <div>
+            <%= label_tag :email, "User Email" %>
+            <%= select_tag :email, options_for_select(User.where.not(id: @organization.users.select(:id)).pluck(:email)), class: "border px-2 py-1 rounded" %>
+          </div>
+
+          <div>
+            <%= label_tag :role, "Role" %>
+            <%= select_tag :role, options_for_select([["Member", "member"], ["Admin", "admin"]]), class: "border px-2 py-1 rounded" %>
+          </div>
+
+          <div class="self-end">
+            <%= submit_tag "Add", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>

@@ -1,0 +1,12 @@
+<% unless devise_controller? %>
+  <div class="flex justify-between flex-row border">
+    <div class="text-2xl font-bold">Dashboard</div>
+
+    <div class="space-x-4 flex flex-row justify-evenly max-w-20">
+      <%= link_to "Manage Organizations", organizations_path, class: "bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700" %>
+
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete,
+            class: "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700" %>
+    </div>
+  </div>
+<% end %>
