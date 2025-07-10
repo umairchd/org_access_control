@@ -1,9 +1,6 @@
 <% content_for :title, "Showing organization" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="md:w-2/3 w-full mb-4">
 
   <h1 class="font-bold text-4xl">Showing organization</h1>
 
@@ -14,19 +11,9 @@
   <%= button_to "Destroy this organization", @organization, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
 
 </div>
-<div class="border">
-  <h3 class="text-lg font-semibold mt-8 mb-2">Members</h3>
-  <ul>
-    <% @organization.memberships.includes(:user).each do |membership| %>
-      <li class="mb-1">
-        <strong><%= membership.user.email %></strong> — <%= membership.role.capitalize %>
-      </li>
-    <% end %>
-  </ul>
-</div>
-<div class="border">
+<div class="border mb-4 rounded-lg bg-gray-100 border-gray-200">
   <% if policy(@organization).update? %>
-    <div class="md:w-2/3 w-full">
+    <div class="md:w-2/3 w-full p-4">
       <h2 class="text-2xl font-semibold mb-2">Add Member to Organization</h2>
 
       <%= form_with url: add_member_organization_path(@organization), method: :post, local: true do |f| %>
@@ -38,14 +25,25 @@
 
           <div>
             <%= label_tag :role, "Role" %>
-            <%= select_tag :role, options_for_select([["Member", "member"], ["Admin", "admin"]]), class: "border px-2 py-1 rounded" %>
+            <%= select_tag :role, options_for_select(Membership.roles), class: "border px-2 py-1 rounded" %>
           </div>
 
           <div class="self-end">
-            <%= submit_tag "Add", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+            <%= submit_tag "Add", class: "bg-indigo-600  text-white px-4  py-1 rounded-lg hover:bg-indigo-700" %>
           </div>
         </div>
       <% end %>
     </div>
   <% end %>
 </div>
+<div class="border p-4 rounded-lg bg-gray-100 border-gray-200">
+  <h3 class="text-lg font-semibold mt-8 mb-2">Members</h3>
+  <ul>
+    <% @organization.memberships.includes(:user).each do |membership| %>
+      <li class="mb-1">
+        <strong><%= membership.user.email %></strong> — <%= membership.role.capitalize %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+

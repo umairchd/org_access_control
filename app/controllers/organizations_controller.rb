@@ -23,6 +23,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations or /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    @organization.memberships.build(user_id: current_user.id, role: :admin)
 
     respond_to do |format|
       if @organization.save

@@ -5,16 +5,25 @@ class OrganizationPolicy < ApplicationPolicy
   # code, beware of possible changes to the ancestors:
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
   def update?
-    user_is_admin?
+    is_admin?
   end
 
   def add_member?
-    user_is_admin?
+    is_admin?
   end
 
-  def user_is_admin?
+  def show?
+    is_admin? || is_manager?
+  end
+
+  def is_admin?
     return false unless user
-    record.memberships.where(user: user, role: 'admin').exists?
+    record.memberships.where(user: user, role: :admin).exists?
+  end
+
+  def is_manager?
+    return false unless user
+    record.memberships.where(user: user, role: :manager).exists?
   end
 
   class Scope < ApplicationPolicy::Scope
