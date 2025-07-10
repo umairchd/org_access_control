@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
+  resources :blogs
   root "dashboard#index"
+
   resources :organizations do
     post :add_member, on: :member
+  end
+
+  resources :users do
+    collection do
+      get :consent
+      patch :update_consent
+    end
   end
 
   devise_for :users

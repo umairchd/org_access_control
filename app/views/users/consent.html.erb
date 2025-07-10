@@ -1,0 +1,21 @@
+<h2 class="text-xl font-bold mb-4">Parental Consent Required</h2>
+
+<%= form_with(model: current_user, url: update_consent_users_path, method: :patch, local: true) do |f| %>
+  <%= render "devise/shared/error_messages", resource: current_user %>
+
+  <div class="field mb-4">
+    <%= f.label :parent_email, class: "block font-semibold" %>
+    <%= f.email_field :parent_email, class: "w-full border rounded px-3 py-2 mt-1" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= f.label :parental_consent, class: "block font-semibold" %>
+    <%= f.check_box :parental_consent %> I confirm that I have parental consent.
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
+<% end %>
+
+<%= link_to "Back", root_path, class: "text-blue-500 underline mt-4 inline-block" %>

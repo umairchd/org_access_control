@@ -19,4 +19,11 @@
       </div>
     <% end %>
   </div>
+
+  <div class="w-full max-w-xl mx-auto my-8 border">
+    <h1>User Consents</h1>
+    <%= pie_chart({ "Consent Given" => @underage_users.count - @awaiting_consent.count,
+                "Pending Consent" => @awaiting_consent.count }) %>
+  </div>
+
 </div>
