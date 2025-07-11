@@ -73,9 +73,9 @@ class BlogsController < ApplicationController
 
     case current_user.age_group
     when :child
-      [:child]
+      [:child, :everyone]
     when :adult
-      [:adult]
+      [:adult, :everyone]
     else
       Blog.age_groups.keys
     end

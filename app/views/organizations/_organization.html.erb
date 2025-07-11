@@ -7,4 +7,8 @@
     <strong class="block font-medium mb-1">Description:</strong>
     <%= organization.description %>
   </div>
+  <div>
+    <strong class="block font-medium mb-1">Role:</strong>
+    <%= organization.memberships.where(user_id: current_user.id).last&.role %>
+  </div>
 </div>
